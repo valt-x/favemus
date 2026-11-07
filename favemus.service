@@ -1,0 +1,23 @@
+[Unit]
+Description=Favemus clothing support harness (Laya)
+After=network.target
+
+[Service]
+Type=simple
+User=baymax
+Group=baymax
+WorkingDirectory=/home/baymax/favemus
+EnvironmentFile=-/home/baymax/favemus/favemus.env
+Environment=OMP_NUM_THREADS=2
+Environment=MKL_NUM_THREADS=2
+Environment=LAYA_DEVICE=cpu
+Environment=HF_HOME=/home/baymax/.cache/huggingface
+Environment=PUBLIC_URL=https://favemus.share.zrok.io
+ExecStart=/home/baymax/laya-venv/bin/uvicorn harness:app --host 127.0.0.1 --port 8091 --workers 1 --timeout-keep-alive 30
+Restart=always
+RestartSec=5
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

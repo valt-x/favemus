@@ -1,0 +1,60 @@
+# Favemus - Git ignore
+# Sensitive files
+favemus.env
+*.env
+*.env.local
+*.env.production
+
+# Database files
+*.db
+*.db.bak*
+*.sqlite
+*.sqlite3
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Backups
+*.bak
+*.bak-*
+*.bak-manual
+*.bak-pre-*
+*_backup*
+*_orig
+
+# Logs
+*.log
+logs/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Systemd
+*.service.bak

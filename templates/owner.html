@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Owner (My Layer) — Favemus</title>
+<style>
+:root{--bg:#0f1115;--panel:#171a21;--panel2:#1e222c;--line:#262b38;--text:#e8eaf0;--muted:#9aa3b2;--accent:#6d6df5;--accent2:#8b8bf8;--green:#34d399;--amber:#fbbf24;--red:#f87171;--radius:14px}
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text);display:flex;min-height:100vh}
+aside{width:230px;flex-shrink:0;background:var(--panel);border-right:1px solid var(--line);padding:22px 14px;position:sticky;top:0;height:100vh;display:flex;flex-direction:column;gap:4px}
+.logo{font-weight:800;font-size:19px;letter-spacing:.02em;margin:2px 8px 4px}.logo span{color:var(--accent2)}
+.tag{font-size:11px;color:var(--muted);margin:0 8px 18px}
+nav a{display:block;padding:10px 12px;border-radius:10px;color:var(--muted);text-decoration:none;font-size:14px;margin-bottom:2px}
+nav a:hover{background:var(--panel2);color:var(--text)}
+.side-foot{margin-top:auto;font-size:12px;color:var(--muted);padding:8px}
+main{flex:1;padding:26px 30px;max-width:1150px;margin:0 auto;width:100%}
+.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px}
+.topbar h1{font-size:22px;margin:0}.topbar .muted{color:var(--muted);font-size:13px}
+button{background:linear-gradient(135deg,var(--accent),#5454e8);color:#fff;border:0;padding:9px 16px;border-radius:10px;font:inherit;font-size:14px;cursor:pointer}
+button.ghost{background:var(--panel2);color:var(--text);border:1px solid var(--line)}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:18px}
+.stat .n{font-size:26px;font-weight:800}.stat .l{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-top:4px}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:20px;margin-bottom:18px}
+.panel h2{margin:0 0 14px;font-size:16px}
+table{width:100%;border-collapse:collapse;font-size:14px}th{color:var(--muted);text-align:left;font-size:12px;text-transform:uppercase;letter-spacing:.05em;padding:8px}td{padding:9px 8px;border-top:1px solid var(--line)}
+input,select{background:var(--panel2);border:1px solid var(--line);color:var(--text);padding:9px 11px;border-radius:10px;font:inherit;font-size:14px;margin:4px 4px 4px 0}
+.badge{display:inline-block;padding:3px 10px;border-radius:999px;font-size:12px;background:var(--panel2);border:1px solid var(--line)}
+.badge.green{color:var(--green);border-color:#14532d}.badge.amber{color:var(--amber);border-color:#713f12}.badge.red{color:var(--red);border-color:#7f1d1d}
+.small{padding:5px 11px;font-size:13px}
+.muted{color:var(--muted);font-size:14px}.ok{color:var(--green)}.warn{color:var(--amber)}
+a{color:var(--accent2)}code{background:var(--panel2);padding:2px 7px;border-radius:6px;font-size:13px}
+@media(max-width:900px){aside{display:none}.grid{grid-template-columns:repeat(2,1fr)}main{padding:18px}}
+</style></head><body>
+<aside><div class="logo">Favemus<span>.</span></div><div class="tag">MY LAYER · Owner console</div>
+<nav><a href="#dashboard">Dashboard</a><a href="#whatsapp">WhatsApp</a><a href="#users">Users</a><a href="#orders">Orders</a><a href="#products">Products</a><a href="#sessions">Conversations</a><a href="#tickets">Tickets</a><a href="/client">Client layer ↗</a></nav>
+<div class="side-foot">AI + data run on this same server.<br><a href="/layers/status">/layers/status</a></div></aside>
+<main>
+<div class="topbar"><div><h1>Owner console</h1><div class="muted" id="who">Loading…</div></div><div><a href="/client"><button class="ghost">Client layer</button></a> <button onclick="logout()">Logout</button></div></div>
+
+<div class="grid" id="dashboard">
+<div class="stat"><div class="n" id="st-dec">—</div><div class="l">AI decisions</div></div>
+<div class="stat"><div class="n" id="st-tick">—</div><div class="l">Open tickets</div></div>
+<div class="stat"><div class="n" id="st-hand">—</div><div class="l">Handoff rate</div></div>
+<div class="stat"><div class="n" id="st-lat">—</div><div class="l">Avg latency</div></div>
+</div>
+
+<div class="panel" id="whatsapp"><h2>WhatsApp AI customer service</h2><div id="wa-status" class="muted">Loading…</div>
+<form onsubmit="return waTest(event)"><input id="wa-to" placeholder="phone e.g. 919876543210" required><input id="wa-msg" placeholder="test message"><button>Send test</button></form>
+<p class="muted">Webhook <code>https://favemus.zealstore.me/whatsapp/webhook</code> · Guide <a href="/whatsapp-guide.html">/whatsapp-guide.html</a></p></div>
+
+<div class="panel" id="users"><h2>Manual users</h2>
+<form onsubmit="return addUser(event)"><input id="nu-email" type="email" placeholder="email" required><input id="nu-pw" type="password" placeholder="password (8+)" required minlength="8"><input id="nu-name" placeholder="name"><select id="nu-role"><option value="user">user</option><option value="admin">admin</option></select><button>Create user</button></form>
+<table id="users-t"></table></div>
+
+<div class="panel" id="orders"><h2>Manual orders</h2>
+<form onsubmit="return addOrder(event)"><input id="no-id" placeholder="order_id e.g. FAV-1042" required><input id="no-item" placeholder="item"><input id="no-amount" type="number" step="0.01" placeholder="amount"><input id="no-status" placeholder="status"><input id="no-eta" placeholder="ETA YYYY-MM-DD"><button>Save order</button></form>
+<table id="orders-t"></table></div>
+
+<div class="panel" id="products"><h2>Products</h2>
+<form onsubmit="return addProduct(event)"><input id="np-sku" placeholder="sku" required><input id="np-name" placeholder="name" required><input id="np-price" type="number" step="0.01" placeholder="price"><input id="np-sizes" placeholder="sizes comma,separated"><button>Save product</button></form>
+<table id="products-t"></table></div>
+
+<div class="panel" id="sessions"><h2>Conversations</h2><table id="sessions-t"></table></div>
+<div class="panel" id="tickets"><h2>Tickets</h2><table id="tickets-t"></table></div>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+async function api(p,opt){const ctl=new AbortController();const t=setTimeout(()=>ctl.abort(),15000);opt={...(opt||{}),signal:ctl.signal};let r;try{r=await fetch(p,opt)}catch(e){throw new Error('Timeout/network: '+p)}finally{clearTimeout(t)}if(r.status===401){location.href='/login';throw new Error('login')}if(!r.ok)throw new Error(p+' -> '+r.status);return r.json()}
+async function logout(){await fetch('/auth/logout',{method:'POST'});location.href='/login'}
+async function waTest(e){e.preventDefault();const r=await api('/harness/whatsapp/test',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({to:$('wa-to').value,message:$('wa-msg').value||'Hello from Favemus AI Support (test message).'})});alert(r.ok?'Sent!':'Not sent — check config/logs')}
+async function addUser(e){e.preventDefault();await api('/harness/users',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({email:$('nu-email').value,password:$('nu-pw').value,name:$('nu-name').value,role:$('nu-role').value})});load()}
+async function addOrder(e){e.preventDefault();await api('/harness/orders',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({order_id:$('no-id').value,item:$('no-item').value||'your order',amount:Number($('no-amount').value||0),status:$('no-status').value||'processing',eta:$('no-eta').value||null})});load()}
+async function addProduct(e){e.preventDefault();await api('/harness/products',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({sku:$('np-sku').value,name:$('np-name').value,price:Number($('np-price').value||0),sizes:$('np-sizes').value.split(',').map(s=>s.trim()).filter(Boolean)})});load()}
+async function toggle(u){await api('/harness/users/'+u+'/toggle-active',{method:'POST'});load()}
+async function del(u){await api('/harness/users/'+u,{method:'DELETE'});load()}
+async function delO(o){await api('/harness/orders/'+encodeURIComponent(o),{method:'DELETE'});load()}
+async function delP(s){await api('/harness/products/'+encodeURIComponent(s),{method:'DELETE'});load()}
+async function closeT(t){await api('/harness/tickets/'+t+'/close',{method:'POST'});load()}
+function stBadge(s){return s==='open'?'<span class="badge amber">open</span>':s==='closed'?'<span class="badge green">closed</span>':'<span class="badge">'+s+'</span>'}
+async function load(){
+  const me=await api('/auth/me'); $('who').textContent=me.user.email+' · '+me.user.role;
+  try{const w=await api('/whatsapp/status');$('wa-status').innerHTML=w.configured?'<span class="ok">● Configured</span> ('+w.api_version+')':'<span class="warn">● Not configured</span> — set WHATSAPP tokens in favemus.env'}catch(e){$('wa-status').textContent='WhatsApp status unavailable'}
+  try{const m=await api('/harness/metrics');$('st-dec').textContent=m.decisions;$('st-tick').textContent=m.open_tickets;$('st-hand').textContent=Math.round(m.handoff_rate*100)+'%';$('st-lat').textContent=m.avg_latency_ms+'ms'}catch(e){}
+  try{const s=await api('/harness/sessions');$('sessions-t').innerHTML='<tr><th>Session</th><th>User</th><th>Channel</th><th>State</th><th>Updated</th></tr>'+(s.sessions||[]).map(x=>'<tr><td>'+x.id+'</td><td>'+(x.user_id||'anonymous')+'</td><td>'+(x.channel||'')+'</td><td>'+(x.state||'')+'</td><td>'+(x.updated_at||'')+'</td></tr>').join('')||'<tr><td>No conversations yet</td></tr>'}catch(e){$('sessions-t').textContent='Error: '+e.message}
+  try{const t=await api('/harness/tickets');$('tickets-t').innerHTML='<tr><th>#</th><th>Kind</th><th>Status</th><th></th></tr>'+(t.tickets||[]).map(x=>'<tr><td>#'+x.id+'</td><td>'+(x.kind||'')+'</td><td>'+stBadge(x.status)+'</td><td>'+(x.status==='open'?'<button class="small" onclick="closeT('+x.id+')">Close</button>':'')+'</td></tr>').join('')||'<tr><td>No tickets</td></tr>'}catch(e){$('tickets-t').textContent='Error: '+e.message}
+  try{const o=await api('/harness/orders');$('orders-t').innerHTML='<tr><th>Order</th><th>Item</th><th>Status</th><th></th></tr>'+(o.orders||[]).map(x=>'<tr><td>'+x.order_id+'</td><td>'+(x.item||'')+'</td><td>'+(x.status||'')+'</td><td><button class="small ghost" onclick="delO(\''+x.order_id+'\')">Delete</button></td></tr>').join('')}catch(e){}
+  try{const pr=await api('/harness/products');$('products-t').innerHTML='<tr><th>SKU</th><th>Name</th><th>Price</th><th></th></tr>'+(pr.products||[]).map(x=>'<tr><td>'+x.sku+'</td><td>'+(x.name||'')+'</td><td>'+(x.price||'')+'</td><td><button class="small ghost" onclick="delP(\''+x.sku+'\')">Delete</button></td></tr>').join('')}catch(e){}
+  try{const u=await api('/harness/users');$('users-t').innerHTML='<tr><th>ID</th><th>Email</th><th>Role</th><th>Active</th><th></th></tr>'+u.users.map(x=>'<tr><td>'+x.id+'</td><td>'+x.email+'</td><td><span class="badge'+(x.role==='admin'?' amber':'')+'">'+x.role+'</span></td><td>'+(x.is_active?'yes':'no')+'</td><td><button class="small ghost" onclick="toggle('+x.id+')">Toggle</button> <button class="small ghost" onclick="del('+x.id+')">Delete</button></td></tr>').join('')}catch(e){$('users-t').textContent='Admin only — your account cannot manage users.'}
+}
+load().catch(e=>{if(String(e)!=='login')document.body.insertAdjacentHTML('beforeend','<p style="color:#f87171">'+e+'</p>')});
+</script></body></html>

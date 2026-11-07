@@ -1,0 +1,501 @@
+<!doctype html>
+<html lang=en-us>
+<head>
+<meta charset=UTF-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<title>Valt Aoi | just an octopus in a sea</title>
+<meta name=description content="Valt Aoi — distributed systems, deep learning, bug bounty, custom ROMs. builds things that don't break.">
+<meta name=author content="Valt Aoi">
+<meta name=keywords content="software engineer,Chennai,Python,Rust,deep learning,bug bounty,custom ROM,de-google,Pandatern,FOSS,">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://valt-aoi.codeberg.page/">
+<meta property="og:title" content="Valt Aoi">
+<meta property="og:description" content="distributed systems, deep learning, bug bounty, custom ROMs. builds things that don't break.">
+<style>
+:root {
+    --apple-bg: #ffffff;
+    --apple-text: #1d1d1f;
+    --apple-secondary: #86868b;
+    --apple-border: #f2f2f2;
+    --apple-blue: #0066cc;
+    --apple-link: #64d2ff;
+    --apple-card: #fafafa;
+    --apple-tag: #f5f5f7;
+}
+body.dark {
+    --apple-bg: #000000;
+    --apple-text: #f5f5f7;
+    --apple-secondary: #a1a1a6;
+    --apple-border: #222222;
+    --apple-blue: #2997ff;
+    --apple-link: #64d2ff;
+    --apple-card: #111111;
+    --apple-tag: #1a1a1a;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    background-color: var(--apple-bg);
+    color: var(--apple-text);
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    padding-top: 100px;
+}
+.container { width: 92%; max-width: 850px; margin: 0 auto; }
+
+/* navbar */
+.nav-wrapper {
+    position: fixed; top: 15px; left: 0; width: 100%;
+    z-index: 10000; transition: transform 0.5s ease;
+}
+.navbar {
+    width: 94%; max-width: 650px; height: 44px; margin: 0 auto;
+    background: rgba(var(--nav-bg), 0.72);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    border: 1px solid var(--apple-border);
+    border-radius: 22px;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 20px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+}
+body:not(.dark) .navbar { --nav-bg: 255, 255, 255; }
+body.dark .navbar { --nav-bg: 29, 29, 31; }
+.nav-hidden { transform: translateY(-80px); }
+.nav-title { font-weight: 600; text-decoration: none; color: inherit; font-size: 0.85rem; }
+.nav-links { display: flex; list-style: none; gap: 18px; align-items: center; }
+.nav-links a { text-decoration: none; color: inherit; font-size: 0.8rem; opacity: 0.6; }
+.nav-links a:hover { opacity: 1; }
+a { color: inherit; text-decoration: none; transition: 0.2s; }
+a:hover { color: var(--apple-blue); }
+
+/* hero */
+.hero {
+    padding: 80px 0 50px;
+    display: flex; align-items: center; gap: 30px;
+}
+.hero-avatar {
+    width: 96px; height: 96px; border-radius: 50%;
+    border: 1px solid var(--apple-border);
+    flex-shrink: 0;
+}
+.hero h1 {
+    font-size: clamp(2.2rem, 8vw, 3.2rem);
+    font-weight: 800; letter-spacing: -0.05em;
+    margin-bottom: 8px;
+}
+.hero p {
+    font-size: 1.15rem; color: var(--apple-secondary);
+    font-weight: 400;
+}
+.hero-links {
+    margin-top: 14px; display: flex; gap: 16px; flex-wrap: wrap;
+}
+.hero-links a {
+    font-size: 0.85rem; color: var(--apple-blue);
+    opacity: 0.8;
+}
+.hero-links a:hover { opacity: 1; }
+
+/* sections */
+.section {
+    padding: 50px 0 30px;
+    border-top: 1px solid var(--apple-border);
+}
+.section-title {
+    font-size: 1.1rem; font-weight: 700;
+    letter-spacing: -0.03em; margin-bottom: 28px;
+    color: var(--apple-secondary); text-transform: uppercase;
+    font-size: 0.75rem; letter-spacing: 0.1em;
+}
+
+/* cards */
+.card {
+    background: var(--apple-card);
+    border: 1px solid var(--apple-border);
+    border-radius: 14px;
+    padding: 22px 24px;
+    margin-bottom: 12px;
+    transition: border-color 0.2s;
+}
+.card:hover { border-color: var(--apple-blue); }
+.card-header {
+    display: flex; justify-content: space-between;
+    align-items: baseline; margin-bottom: 8px;
+    flex-wrap: wrap; gap: 8px;
+}
+.card-title {
+    font-weight: 700; font-size: 1.05rem;
+    letter-spacing: -0.02em;
+}
+.card-meta {
+    font-size: 0.8rem; color: var(--apple-secondary);
+}
+.card-body {
+    font-size: 0.95rem; color: var(--apple-text);
+    line-height: 1.55;
+}
+.card-body ul {
+    margin-top: 8px; padding-left: 18px;
+}
+.card-body li {
+    font-size: 0.9rem; color: var(--apple-secondary);
+    margin-bottom: 4px;
+}
+.card-body li strong { color: var(--apple-text); }
+
+/* tags */
+.tag-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+.tag {
+    font-size: 0.75rem; padding: 4px 10px;
+    background: var(--apple-tag); border-radius: 6px;
+    color: var(--apple-secondary); font-weight: 500;
+}
+
+/* skills grid */
+.skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px;
+}
+.skill-item {
+    background: var(--apple-card);
+    border: 1px solid var(--apple-border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    font-size: 0.88rem;
+}
+.skill-item strong {
+    display: block; font-size: 0.75rem;
+    color: var(--apple-secondary); text-transform: uppercase;
+    letter-spacing: 0.08em; margin-bottom: 4px;
+}
+
+/* terminal */
+.terminal {
+    background: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 10px;
+    padding: 18px 20px;
+    font-family: "SF Mono", "Fira Code", monospace;
+    font-size: 0.85rem;
+    color: #c9d1d9;
+    line-height: 1.7;
+    overflow-x: auto;
+    margin-bottom: 12px;
+}
+.terminal .prompt { color: #7ee787; }
+.terminal .cmd { color: #f0f6fc; }
+.terminal .output { color: #8b949e; }
+.terminal .accent { color: #58a6ff; }
+.terminal .accent:hover { text-decoration: underline; }
+.terminal .warn { color: #d29922; }
+.terminal .err { color: #f85149; }
+
+/* footer */
+footer {
+    padding: 60px 0; text-align: center;
+    border-top: 1px solid var(--apple-border);
+    margin-top: 80px;
+}
+footer p {
+    font-size: 0.85rem; color: var(--apple-secondary);
+}
+
+/* fade in */
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+.fade-in { animation: fadeIn 0.6s ease forwards; }
+
+@media (max-width: 480px) {
+    .navbar { width: 96%; }
+    .hero { flex-direction: column; text-align: center; }
+    .hero-links { justify-content: center; }
+}
+</style>
+<script>
+(function(){
+    localStorage.getItem("theme")==="dark"&&document.body.classList.add("dark");
+    var t,e=function(){
+        var e=document.getElementById("loader-wrapper");
+        e&&(e.style.opacity="0",setTimeout(function(){e.style.display="none"},400))
+    };
+    document.readyState==="complete"?e():(window.addEventListener("load",e),setTimeout(e,1500));
+    window.toggleTheme=function(){
+        document.body.classList.toggle("dark");
+        localStorage.setItem("theme",document.body.classList.contains("dark")?"dark":"light")
+    };
+    t=window.scrollY;
+    window.addEventListener("scroll",function(){
+        var e=document.querySelector(".nav-wrapper");
+        window.scrollY>t&&window.scrollY>80?e.classList.add("nav-hidden"):e.classList.remove("nav-hidden");
+        t=window.scrollY
+    },{passive:true})
+})()
+</script>
+</head>
+<body>
+
+<div id=loader-wrapper><div class=loader-bar></div></div>
+
+<div class="nav-wrapper">
+<nav class="navbar">
+    <a href=# class="nav-title">valt aoi</a>
+    <ul class="nav-links">
+        <li><a href=#projects>projects</a></li>
+        <li><a href=#about>about</a></li>
+        <li><a href="https://pandatern.tech">pandatern</a></li>
+        <li><a href="https://github.com/valt-x">github</a></li>
+        <li><a href="https://codeberg.org/valt-aoi">codeberg</a></li>
+        <li><a class=theme-toggle onclick=toggleTheme()><i class="fa-solid fa-circle-half-stroke"></i></a></li>
+    </ul>
+</nav>
+</div>
+
+<main class="fade-in">
+<div class="container">
+
+<!-- hero -->
+<section class="hero">
+<img class="hero-avatar" src="https://pbs.twimg.com/profile_images/2020187098335350784/kp_XUtEL_400x400.jpg" alt="valt aoi">
+<div>
+    <h1>just an octopus<br>in a sea.</h1>
+    <p>distributed systems, deep learning, bug bounty, custom ROMs.<br>builds things that don't break. studies math for fun.</p>
+    <div class="hero-links">
+        <a href="https://github.com/valt-x">github</a>
+        <a href="https://codeberg.org/valt-aoi">codeberg</a>
+        <a href="https://x.com/ValtAoiz">x/twitter</a>
+        <a href="https://pandatern.tech">pandatern</a>
+        <a href="mailto:deeshcode@gmail.com">email</a>
+    </div>
+</div>
+</section>
+
+<!-- terminal intro -->
+<section class="section">
+<div class="terminal">
+<span class="prompt">$</span> <span class="cmd">cat about.md</span><br>
+<span class="output"># prathish d / valt aoi</span><br>
+<span class="output"></span><br>
+<span class="output">self-taught engineer. Chennai, India.</span><br>
+<span class="output">builds fault-tolerant distributed systems in Python and Rust.</span><br>
+<span class="output">maintainer in the Supabase ecosystem.</span><br>
+<span class="output">bug bounty hunter in free time.</span><br>
+<span class="output">daily-drives Project Matrixx (vanilla, no GApps) on a CMF Phone 1.</span><br>
+<span class="output">de-Googles everything. anti-telemetry by default.</span><br>
+<span class="output">studying mathematics with a goal of quantitative research.</span><br>
+<span class="output"></span><br>
+<span class="output">philosophy: self-healing systems over raw speed.</span><br>
+<span class="prompt">$</span> <span class="cmd">_</span>
+</div>
+</section>
+
+<!-- projects -->
+<section class="section" id="projects">
+<div class="section-title">projects</div>
+
+<div class="card">
+    <div class="card-header">
+        <span class="card-title"><a href="https://github.com/pandatern/makco" style="color:inherit">makco</a></span>
+        <span class="card-meta">Kotlin / Nim · github.com/pandatern/makco</span>
+    </div>
+    <div class="card-body">
+        Chennai Metro booking app built by reverse-engineering the Namma Yatri / MovingTech metro booking API.
+        <ul>
+            <li>Reversed the full booking flow end-to-end: OTP auth, live fares, booking, and the Juspay payment pipeline</li>
+            <li>Android app in Kotlin + Jetpack Compose with a neo-brutalist UI; backend in Nim with JWT + OTP auth</li>
+            <li>Live at <a href="https://api.pandatern.tech" style="color:var(--apple-blue)">api.pandatern.tech</a></li>
+        </ul>
+    </div>
+    <div class="tag-row">
+        <span class="tag">Kotlin</span>
+        <span class="tag">Nim</span>
+        <span class="tag">reverse engineering</span>
+        <span class="tag">Android</span>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <span class="card-title"><a href="https://github.com/developers-nightmare/codestral-cli" style="color:inherit">codestral-cli</a></span>
+        <span class="card-meta">Python · developers-nightmare/codestral-cli</span>
+    </div>
+    <div class="card-body">
+        Toolkit for integrating Codestral as an AI provider: CLI, proxy server, and GitHub Copilot compatibility layer.
+        <ul>
+            <li>Lets developers route any Copilot-compatible agent through Codestral with zero code changes</li>
+            <li>Distributed as a self-contained Python package with a clean CLI and config-driven setup</li>
+        </ul>
+    </div>
+    <div class="tag-row">
+        <span class="tag">Python</span>
+        <span class="tag">AI tooling</span>
+        <span class="tag">4+ stars</span>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <span class="card-title"><a href="https://github.com/supabase-community/realtime-ex" style="color:inherit">realtime-ex</a></span>
+        <span class="card-meta">Elixir · supabase-community/realtime-ex</span>
+    </div>
+    <div class="card-body">
+        Isomorphic Elixir client for Supabase Realtime — live database changes over WebSockets.
+        <ul>
+            <li>Maintained in the official Supabase community org</li>
+            <li>Designed around OTP supervision trees for fault tolerance and automatic reconnection</li>
+        </ul>
+    </div>
+    <div class="tag-row">
+        <span class="tag">Elixir</span>
+        <span class="tag">Supabase</span>
+        <span class="tag">WebSockets</span>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <span class="card-title"><a href="https://github.com/pandaternoss/Crush_it" style="color:inherit">Crush_it</a></span>
+        <span class="card-meta">BEAM · pandaternoss/Crush_it</span>
+    </div>
+    <div class="card-body">
+        BEAM-powered penetration testing framework. Stress-tests HTTP endpoints with up to one million concurrent workers.
+        <ul>
+            <li>Built for fault injection, load validation, and chaos engineering against production services</li>
+        </ul>
+    </div>
+    <div class="tag-row">
+        <span class="tag">BEAM</span>
+        <span class="tag">security</span>
+        <span class="tag">load testing</span>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <span class="card-title"><a href="https://github.com/valt-x/mangle" style="color:inherit">mangle</a></span>
+        <span class="card-meta">Infra · fork of Google tooling</span>
+    </div>
+    <div class="card-body">
+        Infrastructure management tool focused on validation and chaos engineering, adapted for real-world fault-tolerant deployment pipelines.
+    </div>
+    <div class="tag-row">
+        <span class="tag">chaos engineering</span>
+        <span class="tag">infra</span>
+    </div>
+</div>
+
+</section>
+
+<!-- bug bounty & security -->
+<section class="section">
+<div class="section-title">security</div>
+
+<div class="terminal">
+<span class="prompt">root@pandatern:~#</span> <span class="cmd">cat /etc/bugbounty/motto</span><br>
+<span class="output">vibe hacking > vibe coding.</span><br>
+<span class="output"></span><br>
+<span class="output">hunt on public and private programs in free time.</span><br>
+<span class="output">find bugs. report them responsibly. move on.</span><br>
+<span class="output"></span><br>
+<span class="output">tools: Ghidra, JADX, frida, burp.</span><br>
+<span class="output">interested in: API abuse, auth bypass, mobile app sec.</span><br>
+<span class="warn"># currently learning reverse engineering for fun</span><br>
+<span class="prompt">root@pandatern:~#</span> <span class="cmd">_</span>
+</div>
+
+</section>
+
+<!-- custom android -->
+<section class="section">
+<div class="section-title">privacy & custom android</div>
+
+<div class="card">
+    <div class="card-header">
+        <span class="card-title">de-google everything</span>
+    </div>
+    <div class="card-body">
+        <ul>
+            <li><strong>daily driver:</strong> Project Matrixx (vanilla, no-GApps) on a CMF Phone 1</li>
+            <li><strong>custom ROM dev:</strong> comfortable with device trees, kernel flashing, Magisk/KSU</li>
+            <li><strong>privacy:</strong> strip Google services, self-host alternatives, anti-telemetry by default</li>
+            <li><strong>phone:</strong> CMF Phone 1 (tetris) — nothing stock, always custom</li>
+        </ul>
+    </div>
+</div>
+
+</section>
+
+<!-- skills -->
+<section class="section" id="about">
+<div class="section-title">skills</div>
+<div class="skills-grid">
+    <div class="skill-item">
+        <strong>languages</strong>
+        Python, Rust, Nim, Elixir, Kotlin
+    </div>
+    <div class="skill-item">
+        <strong>deep learning</strong>
+        TensorFlow, Keras, GPU debugging, neural network training
+    </div>
+    <div class="skill-item">
+        <strong>systems</strong>
+        OTP, Linux, distributed & fault-tolerant design
+    </div>
+    <div class="skill-item">
+        <strong>security</strong>
+        bug bounty, Ghidra, JADX, pentesting
+    </div>
+    <div class="skill-item">
+        <strong>AI / LLM</strong>
+        inference systems, LLM provider tooling
+    </div>
+    <div class="skill-item">
+        <strong>mobile</strong>
+        Android, Jetpack Compose, custom ROMs, Magisk
+    </div>
+</div>
+</section>
+
+<!-- education -->
+<section class="section">
+<div class="section-title">education</div>
+<div class="card">
+    <div class="card-header">
+        <span class="card-title">B.Tech in Computer Science and Engineering</span>
+        <span class="card-meta">2024 – 2028 (Expected)</span>
+    </div>
+    <div class="card-body">Dr. M.G.R. Educational and Research Institute, Chennai</div>
+</div>
+</section>
+
+<!-- contact -->
+<section class="section">
+<div class="section-title">contact</div>
+<div class="terminal">
+<span class="prompt">$</span> <span class="cmd">cat /etc/motd</span><br>
+<span class="output"></span><br>
+<span class="output">email    <a href="mailto:deeshcode@gmail.com" class="accent">deeshcode@gmail.com</a></span><br>
+<span class="output">phone    <a href="tel:+918190835624" class="accent">+91 81908 35624</a></span><br>
+<span class="output">github   <a href="https://github.com/valt-x" class="accent">github.com/valt-x</a></span><br>
+<span class="output">codeberg <a href="https://codeberg.org/valt-aoi" class="accent">codeberg.org/valt-aoi</a></span><br>
+<span class="output">x        <a href="https://x.com/ValtAoiz" class="accent">@ValtAoiz</a></span><br>
+<span class="output">web      <a href="https://pandatern.tech" class="accent">pandatern.tech</a></span><br>
+<span class="output">location <span class="accent">Chennai, India</span></span><br>
+<span class="output"></span><br>
+<span class="warn"># open to: backend partnerships, security research, collab</span><br>
+<span class="warn"># not open to: idea-stage teams, passive founders, AI slop</span><br>
+<span class="prompt">$</span> <span class="cmd">_</span>
+</div>
+</section>
+
+</div>
+</main>
+
+<footer>
+<div class="container">
+    <p>&copy; 2026 Valt Aoi. Designed for humans. No AI slop.</p>
+</div>
+</footer>
+
+</body>
+</html>
