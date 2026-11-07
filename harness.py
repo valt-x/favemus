@@ -30,6 +30,8 @@ def _tpl(name: str) -> str:
 HARNESS_ADMIN_TOKEN = os.getenv("HARNESS_ADMIN_TOKEN", "").strip()
 TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "").strip()
 GREETINGS = {"hi", "hii", "hello", "hey", "hlo", "namaste", "namaskar", "good morning", "good afternoon", "good evening", "start", "/start"}
+import time as _time
+_START_TIME = _time.time()
 
 QUESTIONS = {
     "tool": {
@@ -949,6 +951,36 @@ def _require_admin_token(request: Request):
     if request.headers.get("x-harness-token") != HARNESS_ADMIN_TOKEN:
         raise HTTPException(403, "forbidden")
 
+
+
+@app.get("/healthz")
+async def healthz():
+    counts = {}
+    try:
+        con = db()
+        for t in ("users", "sessions", "messages", "tickets", "decisions", "orders", "products", "tenants"):
+            try:
+                counts[t] = con.execute(f"SELECT COUNT(*) FROM {t}").fetchone()[0]
+            except Exception:
+                counts[t] = 0
+        con.close()
+    except Exception:
+        counts = {}
+
+    return {
+        "status": "ok",
+        "ready": router is not None,
+        "uptime_seconds": round(time.time() - _START_TIME, 1) if '_START_TIME' in globals() else 0,
+        "layers": {
+            "ai": "laya",
+            "db": "sqlite",
+            "web_server": "nginx",
+            "process_manager": "systemd",
+        },
+        "data": counts,
+        "service": "favemus",
+        "version": "2.0.0",
+    }
 
 
 @app.get("/health")

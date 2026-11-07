@@ -1,42 +1,107 @@
-# Favemus architecture — 3 layers, one server
+# Favemus — Architecture
 
-Everything runs on **this same server** (no external AI provider, no external database, no Shopify/BigCommerce).
+## Overview
+
+Favemus is a **self-hosted AI customer support system**. It runs entirely on one server with no external dependencies for AI inference or database storage.
+
+## Layers
 
 ```
-                    this server (one host, one nginx, one systemd service)
-┌────────────────────────────────────────────────────────────────────────┐
-│  LAYER 1 · MY LAYER (Owner)        /owner  (admin only)                │
-│  Manage users, orders, products, WhatsApp config, tickets, metrics.    │
-├────────────────────────────────────────────────────────────────────────┤
-│  LAYER 2 · CLIENT LAYER            /client (public + logged-in)        │
-│  AI chat widget (/chat.js, /chat), WhatsApp (/whatsapp/webhook),       │
-│  logged-in clients see ONLY their own conversations/tickets.           │
-├────────────────────────────────────────────────────────────────────────┤
-│  LAYER 3 · AI + DATA LAYER         in-process, same server             │
-│  AI: Laya model loaded in favemus.service (HTTP 127.0.0.1:8091)        │
-│  Data: SQLite at /home/baymax/favemus/favemus.db                       │
-│  Tables: users, auth_sessions, sessions, messages, tickets, decisions, │
-│          orders, products, whatsapp_seen                               │
-└────────────────────────────────────────────────────────────────────────┘
-         nginx (443) → 127.0.0.1:8091 (favemus.service)
+Layer 2 · Channels (public-facing)
+├─ Web chat (/client, /chat)
+├─ WhatsApp webhook (/whatsapp/webhook)
+└─ Telegram webhook (/telegram/webhook)
+
+Layer 1 · Admin (authenticated: admin role)
+├─ Owner console (/owner)
+├─ Dashboard: decisions, tickets, handoff rate
+├─ CRUD: users, orders, products
+└─ WhatsApp test sender
+
+Layer 3 · AI + Data (internal)
+├─ Laya Router (loaded in-process)
+│  └─ 6 intents: order_status, refund_status,
+│     initiate_return, exchange_item,
+│     search_products, human_handoff
+├─ SQLite database (favemus.db)
+│  └─ tenants, users, auth_sessions, sessions,
+│     messages, tickets, decisions, orders,
+│     products, whatsapp_seen, telegram_seen
+└─ nginx (443) → uvicorn (127.0.0.1:8091)
 ```
 
-## Requests flow
-- **Owner** (`/owner`, login as admin) → owner APIs (`/harness/users`, `/harness/orders`, `/harness/products`, `/harness/whatsapp/test`, `/harness/sessions|tickets|metrics`) → Layer 3 DB + AI.
-- **Client chat** (`/client` or `/chat.js` embed) → `POST /chat` → Layer 3 `handle_message()` (AI triage → tools: order_status / refund_status / initiate_return / exchange_item / search_products / human_handoff) → reply.
-- **Client WhatsApp** → Meta webhook `/whatsapp/webhook` → same `handle_message()` → Cloud API reply. Session id `wa-<phone>`.
-- **Logged-in client** chat sessions are tied to their account (`user:<email>`), so `/client` "My conversations" shows only theirs.
+## Request Flow
+
+### Chat (web)
+```
+Customer → POST /chat → handle_message()
+  → load or create session
+  → analyse_message(text) [Laya model]
+  → determine intent & confidence
+  → if confidence < CONFIDENCE_FLOOR (default 0.35):
+       clarify, up to 2x, then escalate to human
+  → else: execute tool (order_status / search_products / …)
+  → save decisions & messages
+  → return reply JSON
+```
+
+### WhatsApp
+```
+Customer → WhatsApp message
+  → POST /whatsapp/webhook
+  → dedup check (whatsapp_seen)
+  → handle_message() in background thread
+  → POST to Meta Cloud API sendMessage
+```
+
+### Telegram
+```
+Customer → Telegram message
+  → POST /telegram/webhook
+  → dedup check (telegram_seen)
+  → handle_message() in background thread
+  → sendMessage via Telegram Bot API
+```
+
+## Multi-Tenancy
+
+- nginx sets `X-Tenant-Id` from Host subdomain or `/t/<slug>/` path
+- FastAPI middleware scopes all queries by `tenant_id`
+- Each tenant: isolated users, orders, products, sessions, tickets, metrics
+- Super admin (`X-Harness-Token`) manages tenants at `/saas/tenants`
 
 ## Security
-- Owner APIs require admin role (cookie session or `X-Harness-Token).
-- Client "my" APIs require login and filter by owner — no cross-client access.
-- Public: `/chat`, `/chat.js`, `/whatsapp/webhook` (Meta signature-checked when `WHATSAPP_APP_SECRET` set), `/`, `/privacy`, guides.
-- Passwords: PBKDF2-HMAC-SHA256, 200k iterations. Sessions: opaque tokens, only hashes stored.
 
-## Manual setup
-- First admin: register once at `/register` (bootstrap), then public registration is closed (`FAVEMUS_ALLOW_REGISTRATION=false`).
-- Owner creates every other account in `/owner` (e.g. after a WhatsApp conversation).
-- Orders/products are entered manually in `/owner` — the AI answers from that data.
+- nginx terminates TLS (self-signed cert, Cloudflare Full mode)
+- Security headers: HSTS, CSP `script-src 'self'`, X-Frame-Options DENY, nosniff
+- Passwords: PBKDF2-HMAC-SHA256, 200k iterations
+- Session tokens stored as hashes only
+- Rate limit: `limit_req zone=app burst=40 nodelay` (10r/s per IP)
 
-## Status
-Check any time: `GET /layers/status` (login) or `/admin` → dashboard metrics.
+## Data Flow
+
+```
+Message in → handle_message() → analyse_message() [Laya]
+                                     ↓
+                              confidence ≥ 0.35?
+                              ├─ yes → execute_tool() → reply
+                              └─ no  → clarify (max 2x) → handoff
+                                     ↓
+                              save to sessions/messages/decisions
+```
+
+## Constraints & Limitations
+
+- AI is limited to 6 fixed intents — cannot reason about arbitrary topics
+- No conversation memory beyond session (customer + order history not injected into prompt)
+- No automated retraining or feedback loop
+- Manual data entry required (no API import from Shopify/BigCommerce)
+- Single-server (no horizontal scaling without sticky sessions)
+
+## Scaling Path
+
+1. Add Redis for session state → allows multiple uvicorn workers
+2. Add Postgres → allows horizontal DB scaling
+3. Add prompt templating with full conversation history
+4. Add active learning from agent confirmations/corrections
+5. Split channels (WhatsApp/Telegram/Web) into separate services

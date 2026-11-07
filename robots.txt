@@ -1,0 +1,7 @@
+User-agent: *
+Disallow: /owner
+Disallow: /admin
+Disallow: /layers/status
+Allow: /
+Allow: /chat
+Allow: /client

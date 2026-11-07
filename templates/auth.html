@@ -26,6 +26,4 @@ button:disabled{opacity:.6;cursor:not-allowed}
   <form onsubmit="return go(event)">{{FIELDS}}<button id="btn">{{BUTTON}}</button><div class="err" id="e"></div></form>
   <div class="foot">{{FOOT}}</div>
 </div>
-<script>
-async function go(ev){ev.preventDefault();const b=document.getElementById('btn');b.disabled=true;b.textContent='Please wait…';const body={{BODY}};const r=await fetch('{{ENDPOINT}}',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(body)});const d=await r.json().catch(()=>({}));if(!r.ok){document.getElementById('e').textContent=d.detail||'Failed — try again';b.disabled=false;b.textContent='{{BUTTON}}';return false}location.href='/owner';return false}
-</script></body></html>
+<script src="/static/auth.js"></script></body></html>
