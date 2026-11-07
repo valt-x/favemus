@@ -1,88 +1,196 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Owner (My Layer) — Favemus</title>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Owner — Favemus</title>
 <style>
-:root{--bg:#0f1115;--panel:#171a21;--panel2:#1e222c;--line:#262b38;--text:#e8eaf0;--muted:#9aa3b2;--accent:#6d6df5;--accent2:#8b8bf8;--green:#34d399;--amber:#fbbf24;--red:#f87171;--radius:14px}
-*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text);display:flex;min-height:100vh}
-aside{width:230px;flex-shrink:0;background:var(--panel);border-right:1px solid var(--line);padding:22px 14px;position:sticky;top:0;height:100vh;display:flex;flex-direction:column;gap:4px}
-.logo{font-weight:800;font-size:19px;letter-spacing:.02em;margin:2px 8px 4px}.logo span{color:var(--accent2)}
-.tag{font-size:11px;color:var(--muted);margin:0 8px 18px}
-nav a{display:block;padding:10px 12px;border-radius:10px;color:var(--muted);text-decoration:none;font-size:14px;margin-bottom:2px}
-nav a:hover{background:var(--panel2);color:var(--text)}
-.side-foot{margin-top:auto;font-size:12px;color:var(--muted);padding:8px}
-main{flex:1;padding:26px 30px;max-width:1150px;margin:0 auto;width:100%}
-.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px}
-.topbar h1{font-size:22px;margin:0}.topbar .muted{color:var(--muted);font-size:13px}
-button{background:linear-gradient(135deg,var(--accent),#5454e8);color:#fff;border:0;padding:9px 16px;border-radius:10px;font:inherit;font-size:14px;cursor:pointer}
-button.ghost{background:var(--panel2);color:var(--text);border:1px solid var(--line)}
-.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px}
-.stat{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:18px}
-.stat .n{font-size:26px;font-weight:800}.stat .l{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-top:4px}
-.panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:20px;margin-bottom:18px}
-.panel h2{margin:0 0 14px;font-size:16px}
-table{width:100%;border-collapse:collapse;font-size:14px}th{color:var(--muted);text-align:left;font-size:12px;text-transform:uppercase;letter-spacing:.05em;padding:8px}td{padding:9px 8px;border-top:1px solid var(--line)}
-input,select{background:var(--panel2);border:1px solid var(--line);color:var(--text);padding:9px 11px;border-radius:10px;font:inherit;font-size:14px;margin:4px 4px 4px 0}
-.badge{display:inline-block;padding:3px 10px;border-radius:999px;font-size:12px;background:var(--panel2);border:1px solid var(--line)}
-.badge.green{color:var(--green);border-color:#14532d}.badge.amber{color:var(--amber);border-color:#713f12}.badge.red{color:var(--red);border-color:#7f1d1d}
-.small{padding:5px 11px;font-size:13px}
-.muted{color:var(--muted);font-size:14px}.ok{color:var(--green)}.warn{color:var(--amber)}
-a{color:var(--accent2)}code{background:var(--panel2);padding:2px 7px;border-radius:6px;font-size:13px}
-@media(max-width:900px){aside{display:none}.grid{grid-template-columns:repeat(2,1fr)}main{padding:18px}}
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+:root{
+  --bg:#0b0d12;
+  --panel:#11141c;
+  --panel2:#171b26;
+  --panel3:#1e2433;
+  --line:#232b3a;
+  --text:#e6e9ef;
+  --muted:#7c869a;
+  --accent:#6366f1;
+  --accent2:#818cf8;
+  --accent-glow:rgba(99,102,241,.15);
+  --green:#34d399;
+  --amber:#fbbf24;
+  --red:#f87171;
+  --radius:14px;
+  --shadow:0 4px 6px rgba(0,0,0,.4),0 10px 20px rgba(0,0,0,.3);
+}
+*{box-sizing:border-box;-webkit-font-smoothing:antialiased}
+body{margin:0;font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);display:flex;min-height:100vh}
+
+/* Sidebar */
+aside{width:240px;flex-shrink:0;background:var(--panel);border-right:1px solid var(--line);padding:20px 12px;position:sticky;top:0;height:100vh;display:flex;flex-direction:column}
+.logo{display:flex;align-items:center;gap:10px;padding:8px 10px;margin-bottom:18px}
+.logo-mark{width:30px;height:30px;border-radius:9px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:grid;place-items:center;color:#fff;font-weight:800;font-size:14px}
+.logo span{font-weight:800;font-size:16px;letter-spacing:-.02em}
+.nav{display:flex;flex-direction:column;gap:2px}
+.nav a{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:10px;color:var(--muted);text-decoration:none;font-size:13px;font-weight:500;transition:all .12s;border:1px solid transparent}
+.nav a:hover{background:var(--panel2);color:var(--text)}
+.nav a.active{background:var(--accent-glow);color:var(--accent2);border-color:rgba(97,99,241,.3)}
+.nav a svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+.nav-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin:14px 10px 6px}
+.side-foot{margin-top:auto;font-size:11px;color:var(--muted);padding:10px;border-top:1px solid var(--line)}
+.side-foot code{background:var(--panel2);padding:2px 5px;border-radius:5px;font-size:11px}
+
+/* Header */
+main{flex:1;padding:22px 28px;max-width:1180px;margin:0 auto;width:100%}
+.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;padding-bottom:18px;border-bottom:1px solid var(--line)}
+.topbar h1{font-size:20px;margin:0;font-weight:800;letter-spacing:-.02em}
+.topbar .muted{color:var(--muted);font-size:13px}
+.topbar-actions{display:flex;gap:10px;align-items:center}
+
+/* Buttons */
+button{background:var(--accent);color:#fff;border:0;padding:8px 14px;border-radius:10px;font:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;gap:6px}
+button:hover{background:var(--accent2);transform:translateY(-1px)}
+.btn-ghost{background:var(--panel2);color:var(--text);border:1px solid var(--line)}
+.btn-ghost:hover{background:var(--panel3)}
+.btn-danger{background:var(--red);color:#fff}
+.btn-danger:hover{background:#dc2626}
+
+/* Stat grid */
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:18px;display:flex;justify-content:space-between;align-items:flex-start}
+.stat .n{font-size:28px;font-weight:800;letter-spacing:-.03em;line-height:1}
+.stat .l{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-top:6px;font-weight:600}
+.stat .icon{width:36px;height:36px;border-radius:10px;background:var(--panel2);display:grid;place-items:center;color:var(--accent2)}
+.stat .icon svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
+/* Panels */
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:20px;margin-bottom:16px}
+.panel h2{margin:0 0 14px;font-size:14px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.panel .panel-sub{font-size:13px;color:var(--muted);margin:-10px 0 12px}
+
+/* Tables */
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{color:var(--muted);text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.06em;padding:8px 10px;border-bottom:1px solid var(--line)}
+td{padding:10px;border-bottom:1px solid var(--line)}
+tr:last-child td{border-bottom:0}
+tr:hover td{background:var(--panel2)}
+code{background:var(--panel3);padding:2px 6px;border-radius:6px;font-size:12px}
+
+/* Forms */
+.form-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+input,select{background:var(--panel2);border:1px solid var(--line);color:var(--text);padding:9px 12px;border-radius:10px;font:inherit;font-size:13px;outline:none;transition:border .15s}
+input:focus,select:focus{border-color:var(--accent)}
+.badge{display:inline-block;padding:3px 10px;border-radius:999px;font-size:11px;font-weight:600;background:var(--panel3);border:1px solid var(--line)}
+.badge.green{color:var(--green);border-color:#14532d}
+.badge.amber{color:var(--amber);border-color:#713f12}
+.badge.red{color:var(--red);border-color:#7f1d1d}
+.badge.accent{color:var(--accent2);border-color:var(--accent)}
+
+/* Toast */
+#toast{position:fixed;bottom:24px;right:24px;background:var(--panel3);color:var(--text);padding:14px 20px;border-radius:12px;border:1px solid var(--line);box-shadow:var(--shadow);font-size:13px;font-weight:500;transform:translateY(20px);opacity:0;transition:all .25s;pointer-events:none;z-index:100}
+#toast.show{transform:translateY(0);opacity:1}
+#toast.success{border-left:4px solid var(--green)}
+#toast.error{border-left:4px solid var(--red)}
+
+/* Empty state */
+.empty{padding:40px;text-align:center;color:var(--muted)}
+.empty svg{width:48px;height:48px;stroke:var(--panel3);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;margin:0 auto 12px}
+.empty strong{display:block;font-size:15px;color:var(--text);margin-bottom:4px}
+
+@media(max-width:980px){aside{display:none}.grid{grid-template-columns:repeat(2,1fr)}main{padding:18px}}
 </style></head><body>
-<aside><div class="logo">Favemus<span>.</span></div><div class="tag">MY LAYER · Owner console</div>
-<nav><a href="#dashboard">Dashboard</a><a href="#whatsapp">WhatsApp</a><a href="#users">Users</a><a href="#orders">Orders</a><a href="#products">Products</a><a href="#sessions">Conversations</a><a href="#tickets">Tickets</a><a href="/client">Client layer ↗</a></nav>
-<div class="side-foot">AI + data run on this same server.<br><a href="/layers/status">/layers/status</a></div></aside>
+
+<aside>
+  <div class="logo"><div class="logo-mark">F</div><span>Favemus</span></div>
+  <nav class="nav">
+    <a href="#dashboard" class="active"><svg viewBox="0 0 24 24"><path d="M3 13h8V3H3z"/><path d="M13 21h8V3h-8z"/><path d="M3 21h8v-6H3z"/></svg>Dashboard</a>
+    <a href="#whatsapp"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 2 2 0 0 0-1.94 0L6.67 21a2 2 0 0 0-2.18-2V6.92"/><path d="M12 2a10 10 0 0 1 10 10 10 10 0 0 1-10 10"/></svg>WhatsApp</a>
+    <a href="#users"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>Users</a>
+    <a href="#orders"><svg viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>Orders</a>
+    <a href="#products"><svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>Products</a>
+    <a href="#sessions"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Conversations</a>
+    <a href="#tickets"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg>Tickets</a>
+    <a href="/client" target="_blank"><svg viewBox="0 0 24 24"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg>Client layer</a>
+  </nav>
+  <div class="side-foot">AI + data on this server<br><a href="/layers/status">/layers/status</a></div>
+</aside>
+
 <main>
-<div class="topbar"><div><h1>Owner console</h1><div class="muted" id="who">Loading…</div></div><div><a href="/client"><button class="ghost">Client layer</button></a> <button onclick="logout()">Logout</button></div></div>
+  <div class="topbar">
+    <div><h1>Owner console</h1><div class="muted" id="who">Loading...</div></div>
+    <div class="topbar-actions">
+      <a href="/client" target="_blank"><button class="btn-ghost">Client layer</button></a>
+      <button onclick="logout()">Logout</button>
+    </div>
+  </div>
 
-<div class="grid" id="dashboard">
-<div class="stat"><div class="n" id="st-dec">—</div><div class="l">AI decisions</div></div>
-<div class="stat"><div class="n" id="st-tick">—</div><div class="l">Open tickets</div></div>
-<div class="stat"><div class="n" id="st-hand">—</div><div class="l">Handoff rate</div></div>
-<div class="stat"><div class="n" id="st-lat">—</div><div class="l">Avg latency</div></div>
-</div>
+  <div class="grid" id="dashboard">
+    <div class="stat"><div><div class="n" id="st-dec">—</div><div class="l">AI decisions</div></div><div class="icon"><svg viewBox="0 0 24 24"><path d="M12 2a4 4 0 0 1 4 4c0 2-1 3-2 4h4l-4 9-4-9H4l4-4a4 4 0 0 1 4-4z"/></svg></div></div>
+    <div class="stat"><div><div class="n" id="st-tick">—</div><div class="l">Open tickets</div></div><div class="icon"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg></div></div>
+    <div class="stat"><div><div class="n" id="st-hand">—</div><div class="l">Handoff rate</div></div><div class="icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="23" y1="21" x2="17" y2="15"/><line x1="17" y1="21" x2="23" y2="15"/></svg></div></div>
+    <div class="stat"><div><div class="n" id="st-lat">—</div><div class="l">Avg latency</div></div><div class="icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div></div>
+  </div>
 
-<div class="panel" id="whatsapp"><h2>WhatsApp AI customer service</h2><div id="wa-status" class="muted">Loading…</div>
-<form onsubmit="return waTest(event)"><input id="wa-to" placeholder="phone e.g. 919876543210" required><input id="wa-msg" placeholder="test message"><button>Send test</button></form>
-<p class="muted">Webhook <code>https://favemus.zealstore.me/whatsapp/webhook</code> · Guide <a href="/whatsapp-guide.html">/whatsapp-guide.html</a></p></div>
+  <div class="panel" id="whatsapp">
+    <h2>WhatsApp AI customer service</h2>
+    <p class="panel-sub">Connect WhatsApp to receive and reply to customer messages automatically.</p>
+    <div id="wa-status" class="muted" style="margin-bottom:12px">Loading…</div>
+    <div class="form-row"><input id="wa-to" placeholder="phone e.g. 919876543210" style="flex:1" required><input id="wa-msg" placeholder="test message" style="flex:1"><button>Send test</button></div>
+    <p class="muted" style="margin:0">Webhook <code>https://favemus.zealstore.me/whatsapp/webhook</code> · <a href="/whatsapp-guide.html">Guide</a></p>
+  </div>
 
-<div class="panel" id="users"><h2>Manual users</h2>
-<form onsubmit="return addUser(event)"><input id="nu-email" type="email" placeholder="email" required><input id="nu-pw" type="password" placeholder="password (8+)" required minlength="8"><input id="nu-name" placeholder="name"><select id="nu-role"><option value="user">user</option><option value="admin">admin</option></select><button>Create user</button></form>
-<table id="users-t"></table></div>
+  <div class="panel" id="users">
+    <h2>Manual users</h2>
+    <div class="form-row"><input id="nu-email" type="email" placeholder="email" style="flex:1.5" required><input id="nu-pw" type="password" placeholder="password (8+)" style="flex:1" required minlength="8"><input id="nu-name" placeholder="name" style="flex:1"><select id="nu-role" style="width:100px"><option value="user">user</option><option value="admin">admin</option></select><button>Create user</button></div>
+    <table id="users-t"></table>
+  </div>
 
-<div class="panel" id="orders"><h2>Manual orders</h2>
-<form onsubmit="return addOrder(event)"><input id="no-id" placeholder="order_id e.g. FAV-1042" required><input id="no-item" placeholder="item"><input id="no-amount" type="number" step="0.01" placeholder="amount"><input id="no-status" placeholder="status"><input id="no-eta" placeholder="ETA YYYY-MM-DD"><button>Save order</button></form>
-<table id="orders-t"></table></div>
+  <div class="panel" id="orders">
+    <h2>Manual orders</h2>
+    <div class="form-row"><input id="no-id" placeholder="order_id" style="flex:.8" required><input id="no-item" placeholder="item" style="flex:1.5"><input id="no-amount" type="number" step="0.01" placeholder="amount" style="flex:.7"><input id="no-status" placeholder="status" style="flex:.8"><input id="no-eta" placeholder="ETA" style="flex:.8"><button>Save</button></div>
+    <table id="orders-t"></table>
+  </div>
 
-<div class="panel" id="products"><h2>Products</h2>
-<form onsubmit="return addProduct(event)"><input id="np-sku" placeholder="sku" required><input id="np-name" placeholder="name" required><input id="np-price" type="number" step="0.01" placeholder="price"><input id="np-sizes" placeholder="sizes comma,separated"><button>Save product</button></form>
-<table id="products-t"></table></div>
+  <div class="panel" id="products">
+    <h2>Products</h2>
+    <div class="form-row"><input id="np-sku" placeholder="sku" style="flex:.8" required><input id="np-name" placeholder="name" style="flex:1.5" required><input id="np-price" type="number" step="0.01" placeholder="price" style="flex:.7"><input id="np-sizes" placeholder="sizes comma,sep" style="flex:1"><button>Save</button></div>
+    <table id="products-t"></table>
+  </div>
 
-<div class="panel" id="sessions"><h2>Conversations</h2><table id="sessions-t"></table></div>
-<div class="panel" id="tickets"><h2>Tickets</h2><table id="tickets-t"></table></div>
+  <div class="panel" id="sessions"><h2>Conversations</h2><table id="sessions-t"></table></div>
+  <div class="panel" id="tickets"><h2>Tickets</h2><table id="tickets-t"></table></div>
 </main>
+
+<div id="toast"></div>
+
 <script>
 const $=id=>document.getElementById(id);
-async function api(p,opt){const ctl=new AbortController();const t=setTimeout(()=>ctl.abort(),15000);opt={...(opt||{}),signal:ctl.signal};let r;try{r=await fetch(p,opt)}catch(e){throw new Error('Timeout/network: '+p)}finally{clearTimeout(t)}if(r.status===401){location.href='/login';throw new Error('login')}if(!r.ok)throw new Error(p+' -> '+r.status);return r.json()}
+const toast=(msg,type)=>{const t=document.getElementById('toast');t.textContent=msg;t.className='show '+(type||'success');setTimeout(()=>t.className='',3000)};
+async function api(p,opt){const ctl=new AbortController();const t=setTimeout(()=>ctl.abort(),15000);opt={...(opt||{}),signal:ctl.signal};let r;try{r=await fetch(p,opt)}catch(e){toast('Timeout/network: '+p,'error');throw e}finally{clearTimeout(t)}if(r.status===401){location.href='/login';throw new Error('login')}if(!r.ok)throw new Error(p+' -> '+r.status);return r.json()}
+
 async function logout(){await fetch('/auth/logout',{method:'POST'});location.href='/login'}
-async function waTest(e){e.preventDefault();const r=await api('/harness/whatsapp/test',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({to:$('wa-to').value,message:$('wa-msg').value||'Hello from Favemus AI Support (test message).'})});alert(r.ok?'Sent!':'Not sent — check config/logs')}
-async function addUser(e){e.preventDefault();await api('/harness/users',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({email:$('nu-email').value,password:$('nu-pw').value,name:$('nu-name').value,role:$('nu-role').value})});load()}
-async function addOrder(e){e.preventDefault();await api('/harness/orders',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({order_id:$('no-id').value,item:$('no-item').value||'your order',amount:Number($('no-amount').value||0),status:$('no-status').value||'processing',eta:$('no-eta').value||null})});load()}
-async function addProduct(e){e.preventDefault();await api('/harness/products',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({sku:$('np-sku').value,name:$('np-name').value,price:Number($('np-price').value||0),sizes:$('np-sizes').value.split(',').map(s=>s.trim()).filter(Boolean)})});load()}
-async function toggle(u){await api('/harness/users/'+u+'/toggle-active',{method:'POST'});load()}
-async function del(u){await api('/harness/users/'+u,{method:'DELETE'});load()}
-async function delO(o){await api('/harness/orders/'+encodeURIComponent(o),{method:'DELETE'});load()}
-async function delP(s){await api('/harness/products/'+encodeURIComponent(s),{method:'DELETE'});load()}
-async function closeT(t){await api('/harness/tickets/'+t+'/close',{method:'POST'});load()}
+
+async function waTest(e){e.preventDefault();const to=$('wa-to').value;const r=await api('/harness/whatsapp/test',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({to,message:$('wa-msg').value||'Hello from Favemus AI Support!'})});toast(r.ok?'WhatsApp sent!':'Not sent — check config','success')}
+
+async function addUser(e){e.preventDefault();try{await api('/harness/users',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({email:$('nu-email').value,password:$('nu-pw').value,name:$('nu-name').value,role:$('nu-role').value})});toast('User created')}catch(e){toast('Error: '+e.message,'error')}load()}
+
+async function addOrder(e){e.preventDefault();try{await api('/harness/orders',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({order_id:$('no-id').value,item:$('no-item').value||'your order',amount:Number($('no-amount').value||0),status:$('no-status').value||'processing',eta:$('no-eta').value||null})});toast('Order saved')}catch(e){toast('Error: '+e.message,'error')}load()}
+
+async function addProduct(e){e.preventDefault();try{await api('/harness/products',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({sku:$('np-sku').value,name:$('np-name').value,price:Number($('np-price').value||0),sizes:$('np-sizes').value.split(',').map(s=>s.trim()).filter(Boolean)})});toast('Product saved')}catch(e){toast('Error: '+e.message,'error')}load()}
+
+async function toggle(u){await api('/harness/users/'+u+'/toggle-active',{method:'POST'});toast('User toggled');load()}
+async function del(u){if(!confirm('Delete this user?'))return;await api('/harness/users/'+u,{method:'DELETE'});toast('User deleted');load()}
+async function delO(o){if(!confirm('Delete order '+o+'?'))return;await api('/harness/orders/'+encodeURIComponent(o),{method:'DELETE'});toast('Order deleted');load()}
+async function delP(s){if(!confirm('Delete product '+s+'?'))return;await api('/harness/products/'+encodeURIComponent(s),{method:'DELETE'});toast('Product deleted');load()}
+async function closeT(t){if(!confirm('Close ticket #'+t+'?'))return;await api('/harness/tickets/'+t+'/close',{method:'POST'});toast('Ticket closed');load()}
 function stBadge(s){return s==='open'?'<span class="badge amber">open</span>':s==='closed'?'<span class="badge green">closed</span>':'<span class="badge">'+s+'</span>'}
+
 async function load(){
   const me=await api('/auth/me'); $('who').textContent=me.user.email+' · '+me.user.role;
-  try{const w=await api('/whatsapp/status');$('wa-status').innerHTML=w.configured?'<span class="ok">● Configured</span> ('+w.api_version+')':'<span class="warn">● Not configured</span> — set WHATSAPP tokens in favemus.env'}catch(e){$('wa-status').textContent='WhatsApp status unavailable'}
+  try{const w=await api('/whatsapp/status');$('wa-status').innerHTML=w.configured?'<span style="color:var(--green)">● Configured</span> ('+w.api_version+')':'<span style="color:var(--amber)">● Not configured</span> — set WHATSAPP tokens in favemus.env'}catch(e){$('wa-status').textContent='WhatsApp status unavailable'}
   try{const m=await api('/harness/metrics');$('st-dec').textContent=m.decisions;$('st-tick').textContent=m.open_tickets;$('st-hand').textContent=Math.round(m.handoff_rate*100)+'%';$('st-lat').textContent=m.avg_latency_ms+'ms'}catch(e){}
-  try{const s=await api('/harness/sessions');$('sessions-t').innerHTML='<tr><th>Session</th><th>User</th><th>Channel</th><th>State</th><th>Updated</th></tr>'+(s.sessions||[]).map(x=>'<tr><td>'+x.id+'</td><td>'+(x.user_id||'anonymous')+'</td><td>'+(x.channel||'')+'</td><td>'+(x.state||'')+'</td><td>'+(x.updated_at||'')+'</td></tr>').join('')||'<tr><td>No conversations yet</td></tr>'}catch(e){$('sessions-t').textContent='Error: '+e.message}
-  try{const t=await api('/harness/tickets');$('tickets-t').innerHTML='<tr><th>#</th><th>Kind</th><th>Status</th><th></th></tr>'+(t.tickets||[]).map(x=>'<tr><td>#'+x.id+'</td><td>'+(x.kind||'')+'</td><td>'+stBadge(x.status)+'</td><td>'+(x.status==='open'?'<button class="small" onclick="closeT('+x.id+')">Close</button>':'')+'</td></tr>').join('')||'<tr><td>No tickets</td></tr>'}catch(e){$('tickets-t').textContent='Error: '+e.message}
-  try{const o=await api('/harness/orders');$('orders-t').innerHTML='<tr><th>Order</th><th>Item</th><th>Status</th><th></th></tr>'+(o.orders||[]).map(x=>'<tr><td>'+x.order_id+'</td><td>'+(x.item||'')+'</td><td>'+(x.status||'')+'</td><td><button class="small ghost" onclick="delO(\''+x.order_id+'\')">Delete</button></td></tr>').join('')}catch(e){}
-  try{const pr=await api('/harness/products');$('products-t').innerHTML='<tr><th>SKU</th><th>Name</th><th>Price</th><th></th></tr>'+(pr.products||[]).map(x=>'<tr><td>'+x.sku+'</td><td>'+(x.name||'')+'</td><td>'+(x.price||'')+'</td><td><button class="small ghost" onclick="delP(\''+x.sku+'\')">Delete</button></td></tr>').join('')}catch(e){}
-  try{const u=await api('/harness/users');$('users-t').innerHTML='<tr><th>ID</th><th>Email</th><th>Role</th><th>Active</th><th></th></tr>'+u.users.map(x=>'<tr><td>'+x.id+'</td><td>'+x.email+'</td><td><span class="badge'+(x.role==='admin'?' amber':'')+'">'+x.role+'</span></td><td>'+(x.is_active?'yes':'no')+'</td><td><button class="small ghost" onclick="toggle('+x.id+')">Toggle</button> <button class="small ghost" onclick="del('+x.id+')">Delete</button></td></tr>').join('')}catch(e){$('users-t').textContent='Admin only — your account cannot manage users.'}
+  try{const s=await api('/harness/sessions');$('sessions-t').innerHTML='<tr><th>Session</th><th>User</th><th>Channel</th><th>State</th><th>Updated</th></tr>'+(s.sessions||[]).map(x=>'<tr><td><code>'+x.id+'</code></td><td>'+(x.user_id||'anonymous')+'</td><td>'+(x.channel||'')+'</td><td>'+(x.state||'')+'</td><td>'+(x.updated_at||'')+'</td></tr>').join('')||'<tr><td colspan="5"><div class="empty"><strong>No conversations yet</strong>Messages from WhatsApp, Telegram, and web will appear here.</div></td></tr>'}catch(e){}
+  try{const t=await api('/harness/tickets');$('tickets-t').innerHTML='<tr><th>#</th><th>Kind</th><th>Status</th><th></th></tr>'+(t.tickets||[]).map(x=>'<tr><td>#'+x.id+'</td><td>'+(x.kind||'')+'</td><td>'+stBadge(x.status)+'</td><td>'+(x.status==='open'?'<button class="small btn-ghost" onclick="closeT('+x.id+')">Close</button>':'')+'</td></tr>').join('')||'<tr><td colspan="4"><div class="empty"><strong>No tickets yet</strong>Customer escalations will appear here.</div></td></tr>'}catch(e){}
+  try{const o=await api('/harness/orders');$('orders-t').innerHTML='<tr><th>Order</th><th>Item</th><th>Status</th><th></th></tr>'+(o.orders||[]).map(x=>'<tr><td><code>'+x.order_id+'</code></td><td>'+(x.item||'')+'</td><td>'+(x.status||'')+'</td><td><button class="small btn-ghost" onclick="delO(\''+x.order_id+'\')">Delete</button></td></tr>').join('')}catch(e){}
+  try{const pr=await api('/harness/products');$('products-t').innerHTML='<tr><th>SKU</th><th>Name</th><th>Price</th><th></th></tr>'+(pr.products||[]).map(x=>'<tr><td><code>'+x.sku+'</code></td><td>'+(x.name||'')+'</td><td>'+(x.price||'')+'</td><td><button class="small btn-ghost" onclick="delP(\''+x.sku+'\')">Delete</button></td></tr>').join('')}catch(e){}
+  try{const u=await api('/harness/users');$('users-t').innerHTML='<tr><th>ID</th><th>Email</th><th>Role</th><th>Active</th><th></th></tr>'+u.users.map(x=>'<tr><td>'+x.id+'</td><td>'+x.email+'</td><td><span class="badge'+(x.role==='admin'?' accent':'')+'">'+x.role+'</span></td><td>'+(x.is_active?'yes':'no')+'</td><td><button class="small btn-ghost" onclick="toggle('+x.id+')">Toggle</button> <button class="small btn-ghost" onclick="del('+x.id+')">Delete</button></td></tr>').join('')}catch(e){$('users-t').textContent='Admin only'}
 }
-load().catch(e=>{if(String(e)!=='login')document.body.insertAdjacentHTML('beforeend','<p style="color:#f87171">'+e+'</p>')});
-</script></body></html>
+load().catch(e=>{if(String(e)!=='login')toast(e.message,'error')});
+</script>
+</body></html>

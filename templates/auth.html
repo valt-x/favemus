@@ -1,22 +1,31 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{{TITLE}} — Favemus</title>
 <style>
-:root{--accent:#6d6df5;--accent2:#5454e8}
-*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;min-height:100vh;display:grid;place-items:center;background:linear-gradient(135deg,#4f46e5,#7c3aed 55%,#0ea5e9);padding:20px}
-.card{background:#fff;border-radius:22px;padding:36px 34px;width:min(430px,94vw);box-shadow:0 24px 60px rgba(0,0,0,.28)}
-.mark{width:46px;height:46px;border-radius:13px;background:linear-gradient(135deg,var(--accent),#a78bfa);display:grid;place-items:center;color:#fff;font-weight:800;font-size:21px;margin-bottom:16px}
-h1{margin:0 0 6px;font-size:23px}.sub{color:#6b7280;font-size:14px;margin:0 0 8px}
-label{display:block;margin:15px 0 6px;font-size:14px;font-weight:600}
-input{width:100%;padding:12px 14px;border:1px solid #e5e7f2;border-radius:12px;font:inherit;font-size:15px}
-input:focus{outline:2px solid var(--accent);border-color:transparent}
-button{width:100%;margin-top:20px;padding:13px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:0;border-radius:12px;font:inherit;font-size:15px;font-weight:600;cursor:pointer}
-button:disabled{opacity:.6}
-.err{color:#dc2626;font-size:14px;margin-top:10px;min-height:18px}
-.foot{font-size:14px;color:#6b7280;margin-top:18px;text-align:center}.foot a{color:var(--accent2);text-decoration:none;font-weight:600}
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+:root{--accent:#6366f1;--accent2:#818cf8;--bg:#f8fafc;--panel:#ffffff;--line:#e2e8f0;--text:#0f172a;--muted:#64748b}
+*{box-sizing:border-box;-webkit-font-smoothing:antialiased}
+body{margin:0;font-family:'Inter',system-ui,sans-serif;min-height:100vh;display:grid;place-items:center;background:var(--bg);padding:20px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:36px 34px;width:min(420px,94vw);box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.logo-row{display:flex;align-items:center;gap:10px;margin-bottom:20px}
+.logo-mark{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:grid;place-items:center;color:#fff;font-weight:800;font-size:17px}
+.logo-text{font-weight:800;font-size:16px;letter-spacing:-.02em;color:var(--text)}
+h1{margin:0 0 6px;font-size:22px;font-weight:800;letter-spacing:-.03em}
+.sub{color:var(--muted);font-size:14px;margin:0 0 20px}
+label{display:block;margin:16px 0 6px;font-size:13px;font-weight:600;color:var(--text)}
+input{width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:12px;font:inherit;font-size:15px;outline:none;transition:border .15s}
+input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(99,102,241,.08)}
+button{width:100%;margin-top:18px;padding:13px;background:var(--accent);color:#fff;border:0;border-radius:12px;font:inherit;font-size:15px;font-weight:700;cursor:pointer;transition:all .2s}
+button:hover{background:var(--accent2)}
+button:disabled{opacity:.6;cursor:not-allowed}
+.err{color:#dc2626;font-size:13px;margin-top:10px;min-height:18px}
+.foot{font-size:14px;color:var(--muted);margin-top:18px;text-align:center}.foot a{color:var(--accent2);text-decoration:none;font-weight:600}
 </style></head><body>
-<div class="card"><div class="mark">F</div><h1>{{HEADING}}</h1><p class="sub">{{SUB}}</p>
-<form onsubmit="return go(event)">{{FIELDS}}<button id="btn">{{BUTTON}}</button><div class="err" id="e"></div></form>
-<div class="foot">{{FOOT}}</div></div>
+<div class="card">
+  <div class="logo-row"><div class="logo-mark">F</div><div class="logo-text">Favemus</div></div>
+  <h1>{{HEADING}}</h1><p class="sub">{{SUB}}</p>
+  <form onsubmit="return go(event)">{{FIELDS}}<button id="btn">{{BUTTON}}</button><div class="err" id="e"></div></form>
+  <div class="foot">{{FOOT}}</div>
+</div>
 <script>
 async function go(ev){ev.preventDefault();const b=document.getElementById('btn');b.disabled=true;b.textContent='Please wait…';const body={{BODY}};const r=await fetch('{{ENDPOINT}}',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(body)});const d=await r.json().catch(()=>({}));if(!r.ok){document.getElementById('e').textContent=d.detail||'Failed — try again';b.disabled=false;b.textContent='{{BUTTON}}';return false}location.href='/owner';return false}
 </script></body></html>

@@ -1,29 +1,37 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Favemus Support Harness</title>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Favemus — Support</title>
 <style>
-:root{--accent:#6d6df5;--accent2:#5454e8;--bg:#f4f5fb;--panel:#fff;--line:#e5e7f2;--text:#171923;--muted:#6b7280}
-*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text)}
-header{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;padding:14px 22px;display:flex;justify-content:space-between;align-items:center}
-header b{font-size:16px}header a{color:#fff;text-decoration:none;font-size:14px;margin-left:14px;opacity:.9}header button{background:rgba(255,255,255,.18);color:#fff;border:1px solid rgba(255,255,255,.35);padding:7px 13px;border-radius:999px;cursor:pointer;font:inherit;font-size:13px}
-main{display:grid;grid-template-columns:1.15fr 1fr;gap:16px;max-width:1080px;margin:20px auto;padding:0 16px}
-.card{background:var(--panel);border:1px solid var(--line);border-radius:20px;box-shadow:0 10px 30px rgba(23,25,35,.06);display:flex;flex-direction:column;overflow:hidden;min-height:520px}
-.card h2{margin:0;padding:16px 20px;font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);border-bottom:1px solid var(--line)}
-#log{flex:1;overflow:auto;padding:18px;display:flex;flex-direction:column;gap:10px}
-.msg{max-width:80%;padding:11px 15px;border-radius:18px;line-height:1.45;font-size:14px;white-space:pre-wrap}
-.user{align-self:flex-end;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border-bottom-right-radius:6px}
-.bot{align-self:flex-start;background:#eef0ff;border-bottom-left-radius:6px}
-.sys{align-self:center;font-size:12px;color:var(--muted)}
-form{display:flex;gap:10px;padding:13px;border-top:1px solid var(--line)}input{flex:1;padding:12px 15px;border:1px solid var(--line);border-radius:999px;font:inherit}
-form button{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:0;padding:0 22px;border-radius:999px;font:inherit;cursor:pointer}
-pre{margin:0;padding:16px;overflow:auto;font-size:12px;line-height:1.55;flex:1}
-.badge{display:inline-block;font-size:11px;padding:3px 9px;border-radius:999px;background:#eef0ff;color:var(--accent2);margin-bottom:8px}
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+:root{--accent:#6366f1;--accent2:#818cf8;--bg:#f8fafc;--panel:#ffffff;--line:#e2e8f0;--text:#0f172a;--muted:#64748b}
+*{box-sizing:border-box;-webkit-font-smoothing:antialiased}
+body{margin:0;font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text)}
+header{background:rgba(255,255,255,.85);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line);padding:0 24px;height:56px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:10}
+header a{color:var(--muted);text-decoration:none;font-size:13px;font-weight:500}a:hover{color:var(--text)}
+main{display:grid;grid-template-columns:1.2fr 1fr;gap:16px;max-width:1100px;margin:18px auto;padding:0 18px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;box-shadow:0 1px 3px rgba(0,0,0,.08);display:flex;flex-direction:column;overflow:hidden;min-height:520px}
+.card h2{margin:0;padding:14px 18px;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;border-bottom:1px solid var(--line)}
+#log{flex:1;overflow:auto;padding:18px;display:flex;flex-direction:column;gap:12px}
+.msg{max-width:82%;padding:11px 15px;border-radius:16px;line-height:1.5;font-size:14px;white-space:pre-wrap}
+.user{align-self:flex-end;background:var(--accent);color:#fff;border-bottom-right-radius:5px}
+.bot{align-self:flex-start;background:#f1f5f9;color:var(--text);border-bottom-left-radius:5px}
+.sys{align-self:center;font-size:12px;color:var(--muted);background:#f1f5f9;padding:5px 10px;border-radius:999px}
+form{display:flex;gap:8px;padding:12px;border-top:1px solid var(--line);background:#fff}
+input{flex:1;padding:12px 16px;border:1px solid var(--line);border-radius:999px;font:inherit;outline:none}
+input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(99,102,241,.1)}
+form button{background:var(--accent);color:#fff;border:0;padding:0 22px;border-radius:999px;font:inherit;font-weight:600;cursor:pointer}
+pre{margin:0;padding:16px;overflow:auto;font-size:12px;line-height:1.55;flex:1;font-family:'SF Mono',Monaco,Consolas,monospace}
+.badge{display:inline-block;font-size:10px;padding:2px 8px;border-radius:999px;background:#eef2ff;color:var(--accent);margin-bottom:8px}
 @media(max-width:820px){main{grid-template-columns:1fr}}
 </style></head><body>
-<header><b>Favemus support harness</b><span><a href="/client">Client layer</a><a href="/owner">My layer (Owner)</a><button onclick="reset()">New session</button></span></header>
+<header>
+  <div style="display:flex;align-items:center;gap:10px;font-weight:800;font-size:15px;letter-spacing:-.02em"><div style="width:26px;height:26px;border-radius:7px;background:linear-gradient(135deg,#6366f1,#818cf8);display:grid;place-items:center;color:#fff;font-size:12px;font-weight:800">F</div>Favemus</div>
+  <div style="display:flex;gap:16px;align-items:center"><a href="/client">Client</a><a href="/owner">Owner</a><button onclick="reset()" style="background:transparent;border:1px solid var(--line);padding:6px 12px;border-radius:8px;font:inherit;font-size:12px;cursor:pointer;color:var(--muted)">New session</button></div>
+</header>
 <main>
-<section class="card"><h2>Conversation</h2><div id="log"></div>
-<form onsubmit="return send(event)"><input id="msg" placeholder="Type a customer message…" autocomplete="off"><button>Send</button></form></section>
-<section class="card"><h2>AI trace</h2><pre id="trace">Waiting for a message…</pre></section>
+  <section class="card"><h2>Conversation</h2><div id="log"></div>
+    <form onsubmit="return send(event)"><input id="msg" placeholder="Type a customer message…" autocomplete="off"><button>Send</button></form>
+  </section>
+  <section class="card"><h2>AI Trace</h2><pre id="trace">Waiting for a message…</pre></section>
 </main>
 <script>
 let sid=localStorage.getItem('favemus_sid');if(!sid){sid='web-'+Math.random().toString(36).slice(2,12);localStorage.setItem('favemus_sid',sid)}
@@ -32,4 +40,5 @@ function add(t,c){const d=document.createElement('div');d.className='msg '+c;d.t
 function reset(){localStorage.removeItem('favemus_sid');location.reload()}
 async function send(e){e.preventDefault();const i=document.getElementById('msg');const t=i.value.trim();if(!t||i.disabled)return;i.value='';i.disabled=true;add(t,'user');add('Favemus is typing…','bot');trace.textContent='Thinking… (AI takes 2–5s)';const ctl=new AbortController();const to=setTimeout(()=>ctl.abort(),60000);try{const r=await fetch('/chat',{method:'POST',headers:{'content-type':'application/json'},signal:ctl.signal,body:JSON.stringify({message:t,session_id:sid,channel:'web'})});const d=await r.json();sid=d.session_id;localStorage.setItem('favemus_sid',sid);log.lastChild.textContent=d.reply;trace.innerHTML='';const b=document.createElement('span');b.className='badge';b.textContent='action='+d.action+' state='+d.state+' session='+d.session_id;trace.appendChild(b);trace.appendChild(document.createTextNode('\n\n'+JSON.stringify({analysis:d.analysis,tool_call:d.tool_call,routing:d.routing},null,2)))}catch(err){log.lastChild.textContent=err.name==='AbortError'?'Timed out — AI is busy. Try again.':'Error: '+err;trace.textContent=String(err)}finally{clearTimeout(to);i.disabled=false;i.focus()}}
 add('Hi! Try: "Where is my order FAV-1042?" or "I want to return FAV-2231, the dress is torn."','sys');
-</script></body></html>
+</script>
+</body></html>

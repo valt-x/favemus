@@ -75,8 +75,8 @@ Everything runs on **this same host** (one nginx, one systemd service, one SQLit
 ### 1. Clone & Setup
 
 ```bash
-git clone https://github.com/valt-x/valt-x.git
-cd valt-x
+git clone https://github.com/valt-x/favemus.git
+cd favemus
 
 # Copy env template and fill in your values
 cp favemus.env.example favemus.env
