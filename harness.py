@@ -28,6 +28,20 @@ def _tpl(name: str) -> str:
     return (TEMPLATE_DIR / name).read_text(encoding="utf-8")
   # standalone: manual users, manual orders/products. No Shopify/BigCommerce/WooCommerce.
 HARNESS_ADMIN_TOKEN = os.getenv("HARNESS_ADMIN_TOKEN", "").strip()
+STRIPE_SECRET_KEY = os.getenv("STRIPE_SECRET_KEY", "").strip()
+STRIPE_WEBHOOK_SECRET = os.getenv("STRIPE_WEBHOOK_SECRET", "").strip()
+STRIPE_PRICE_STARTER = os.getenv("STRIPE_PRICE_STARTER", "").strip()
+STRIPE_PRICE_PRO = os.getenv("STRIPE_PRICE_PRO", "").strip()
+STRIPE_PRICE_ENTERPRISE = os.getenv("STRIPE_PRICE_ENTERPRISE", "").strip()
+
+try:
+    import stripe as _stripe
+    if STRIPE_SECRET_KEY:
+        _stripe.api_key = STRIPE_SECRET_KEY
+    _STRIPE_AVAILABLE = True
+except ImportError:
+    _stripe = None
+    _STRIPE_AVAILABLE = False
 TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "").strip()
 GREETINGS = {"hi", "hii", "hello", "hey", "hlo", "namaste", "namaskar", "good morning", "good afternoon", "good evening", "start", "/start"}
 import time as _time
@@ -2200,6 +2214,85 @@ def _ensure_telegram_table(con):
         )
     """)
     con.commit()
+
+
+# ---------------------------------------------------------------------------
+# Billing (Stripe) — SaaS subscription management
+# ---------------------------------------------------------------------------
+class BillingCheckoutIn(BaseModel):
+    plan: str = "starter"
+    success_url: str = "https://favemus.zealstore.me/owner?checkout=success"
+    cancel_url: str = "https://favemus.zealstore.me/owner?checkout=cancelled"
+
+@app.post("/saas/billing/checkout")
+async def billing_checkout(req: BillingCheckoutIn, request: Request):
+    if not _STRIPE_AVAILABLE or not STRIPE_SECRET_KEY:
+        raise HTTPException(503, "Stripe not configured. Set STRIPE_SECRET_KEY in favemus.env")
+    tenant_id = get_tenant_id(request)
+    price_map = {
+        "starter": STRIPE_PRICE_STARTER,
+        "pro": STRIPE_PRICE_PRO,
+        "enterprise": STRIPE_PRICE_ENTERPRISE,
+    }
+    price_id = price_map.get(req.plan)
+    if not price_id:
+        raise HTTPException(400, f"No price configured for plan: {req.plan}")
+    try:
+        session = _stripe.checkout.Session.create(
+            payment_method_types=["card"],
+            line_items=[{"price": price_id, "quantity": 1}],
+            mode="subscription",
+            success_url=req.success_url,
+            cancel_url=req.cancel_url,
+            metadata={"tenant_slug": tenant_id, "plan": req.plan},
+        )
+        return {"url": session.url, "session_id": session.id}
+    except Exception as exc:
+        raise HTTPException(400, str(exc))
+
+@app.post("/saas/billing/webhook")
+async def billing_webhook(request: Request):
+    if not _STRIPE_AVAILABLE or not STRIPE_WEBHOOK_SECRET:
+        raise HTTPException(503, "Stripe webhook secret not configured")
+    payload = await request.body()
+    sig_header = request.headers.get("stripe-signature", "")
+    try:
+        event = _stripe.Webhook.construct_event(payload, sig_header, STRIPE_WEBHOOK_SECRET)
+    except Exception as exc:
+        raise HTTPException(400, f"Webhook error: {exc}")
+    event_type = event["type"]
+    data = event["data"]["object"]
+    con = db()
+    if event_type == "checkout.session.completed":
+        tenant_slug = (data.get("metadata") or {}).get("tenant_slug")
+        plan = (data.get("metadata") or {}).get("plan")
+        customer_id = data.get("customer")
+        if tenant_slug and plan:
+            con.execute("UPDATE tenants SET plan=?, subscription_status='active', stripe_customer_id=? WHERE slug=?",
+                        (plan, customer_id, tenant_slug))
+            con.commit()
+            print(f"Stripe checkout completed: tenant={tenant_slug} plan={plan}", flush=True)
+    elif event_type == "customer.subscription.deleted":
+        customer_id = data.get("customer")
+        if customer_id:
+            con.execute("UPDATE tenants SET subscription_status='cancelled' WHERE stripe_customer_id=?", (customer_id,))
+            con.commit()
+    con.close()
+    return {"ok": True, "event": event_type}
+
+@app.get("/saas/billing/status")
+async def billing_status(request: Request):
+    tenant_id = get_tenant_id(request)
+    con = db()
+    row = con.execute("SELECT plan, subscription_status, stripe_customer_id FROM tenants WHERE slug=?", (tenant_id,)).fetchone()
+    con.close()
+    if not row:
+        raise HTTPException(404, "Tenant not found")
+    return {
+        "plan": row["plan"],
+        "subscription_status": row["subscription_status"],
+        "stripe_customer_id": row["stripe_customer_id"],
+    }
 
 @app.get("/", response_class=HTMLResponse)
 def index():

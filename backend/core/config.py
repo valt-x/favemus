@@ -1,0 +1,27 @@
+"""Favemus platform configuration."""
+import os
+from pathlib import Path
+
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
+DB_PATH = os.getenv("FAVEMUS_DB", str(BASE_DIR / "favemus.db"))
+SECRET_KEY = os.getenv("FAVEMUS_SECRET_KEY", "change-me-in-production")
+JWT_ALGORITHM = "HS256"
+JWT_ACCESS_TOKEN_EXPIRE_MINUTES = 30
+JWT_REFRESH_TOKEN_EXPIRE_DAYS = 7
+STRIPE_SECRET_KEY = os.getenv("STRIPE_SECRET_KEY", "")
+STRIPE_WEBHOOK_SECRET = os.getenv("STRIPE_WEBHOOK_SECRET", "")
+STRIPE_PRICE_STARTER = os.getenv("STRIPE_PRICE_STARTER", "")
+STRIPE_PRICE_PRO = os.getenv("STRIPE_PRICE_PRO", "")
+STRIPE_PRICE_ENTERPRISE = os.getenv("STRIPE_PRICE_ENTERPRISE", "")
+HARNESS_ADMIN_TOKEN = os.getenv("HARNESS_ADMIN_TOKEN", "")
+TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "")
+WHATSAPP_VERIFY_TOKEN = os.getenv("WHATSAPP_VERIFY_TOKEN", "")
+WHATSAPP_ACCESS_TOKEN = os.getenv("WHATSAPP_ACCESS_TOKEN", "")
+WHATSAPP_PHONE_NUMBER_ID = os.getenv("WHATSAPP_PHONE_NUMBER_ID", "")
+WHATSAPP_APP_SECRET = os.getenv("WHATSAPP_APP_SECRET", "")
+WHATSAPP_API_VERSION = os.getenv("WHATSAPP_API_VERSION", "v21.0")
+FAVEMUS_DB = DB_PATH
+FAVEMUS_CONFIDENCE_FLOOR = float(os.getenv("FAVEMUS_CONFIDENCE_FLOOR", "0.35"))
+FAVEMUS_PLATFORM = os.getenv("FAVEMUS_PLATFORM", "manual")
+FAVEMUS_ALLOW_REGISTRATION = os.getenv("FAVEMUS_ALLOW_REGISTRATION", "false").lower() in ("true", "1", "yes")
+PORT = int(os.getenv("PORT", "8091"))
